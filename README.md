@@ -64,11 +64,11 @@ uv run task_cli.py update 1 --status done
 uv run pytest test_task_cli.py -v
 ```
 
-## 📝 學習路線
+## 學習路線
 
 按照以下順序完成各個 TODO 任務：
 
-### ✅ TODO 1: 實現 JSON 數據存儲功能
+### TODO 1: 實現 JSON 數據存儲功能
 實現 `load_database()` 和 `save_database()` 函數
 - 從 JSON 文件讀取任務列表
 - 將任務列表寫入 JSON 文件
@@ -83,7 +83,7 @@ uv run pytest test_task_cli.py -v
 
 ---
 
-### ✅ TODO 2: 實現核心任務管理功能
+### TODO 2: 實現核心任務管理功能
 
 #### 2a. `add_task()` — 添加新任務
 - 計算新任務的 ID（最大 ID + 1）
@@ -113,7 +113,7 @@ uv run pytest test_task_cli.py -v
 
 ---
 
-### ✅ TODO 3: 實現快速狀態更新功能
+### TODO 3: 實現快速狀態更新功能
 實現 `mark_done()` 和 `mark_in_progress()` 函數
 - 這些是 `update_task()` 的快捷方法
 
@@ -124,7 +124,7 @@ uv run pytest test_task_cli.py -v
 
 ---
 
-### ✅ TODO 4: 實現命令行界面和輸出格式
+### TODO 4: 實現命令行界面和輸出格式
 實現 `print_task()` 和 `print_tasks()` 函數
 - 美化輸出格式
 - 顯示任務信息（ID, 描述, 狀態, 日期）
@@ -137,7 +137,7 @@ uv run pytest test_task_cli.py -v
 
 ---
 
-### ✅ TODO 5: 實現命令行參數解析和命令路由
+### TODO 5: 實現命令行參數解析和命令路由
 使用 `argparse` 實現：
 - `add` 命令：添加任務
 - `list` 命令：列出任務（支持 `-s` 和 `-d` 選項）
@@ -155,7 +155,7 @@ uv run pytest test_task_cli.py -v
 
 ---
 
-### ✅ TODO 6: 編寫單元測試
+### TODO 6: 編寫單元測試
 實現 `test_task_cli.py` 中的所有測試用例
 
 **檔案**：`test_task_cli.py`
@@ -224,7 +224,7 @@ task delete 1
 - [pytest 文檔](https://docs.pytest.org/)
 - [原始 Taskly 專案](https://github.com/brkahmed/taskly)
 
-## 🚀 下一步
+## 下一步
 
 完成所有 TODO 後，你可以：
 
@@ -247,13 +247,10 @@ task delete 1
    - 邊界情況測試
    - 集成測試
 
-## 💡 提示
+---
 
 - 先實現基本功能，後添加優化
 - 經常測試，邊做邊測
 - 查看原始 Taskly 項目獲取靈感
 - 不要害怕出錯，錯誤是學習的好機會！
 
----
-
-祝你學習愉快！🎉
