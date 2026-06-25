@@ -17,20 +17,49 @@ task-tracker-python/
 
 ## 🚀 快速開始
 
-### 1. 安裝依賴
+### 方式 1️⃣：安裝為全局命令（推薦）
+
+#### 從源碼安裝
+```bash
+git clone https://github.com/你的用戶名/task-tracker-python.git
+cd task-tracker-python
+uv pip install -e .
+```
+
+#### 或直接從 GitHub 安裝
+```bash
+uv pip install git+https://github.com/你的用戶名/task-tracker-python.git
+```
+
+安裝完成後，重新打開 terminal 或執行：
+```bash
+source ~/.zshrc
+```
+
+現在可以直接使用 `task` 命令：
+```bash
+task add "Buy groceries"
+task list
+task update 1 --status done
+task mark-done 1
+task delete 1
+```
+
+### 方式 2️⃣：開發模式（無需全局安裝）
+
 ```bash
 cd task-tracker-python
 uv sync
 ```
 
-### 2. 運行應用
+使用 `uv run` 執行：
 ```bash
 uv run task_cli.py add "Buy groceries"
 uv run task_cli.py list
 uv run task_cli.py update 1 --status done
 ```
 
-### 3. 運行測試
+### 運行測試
 ```bash
 uv run pytest test_task_cli.py -v
 ```
@@ -163,28 +192,28 @@ database = {
 ### 命令示例
 ```bash
 # 添加任務
-uv run task_cli.py add "Buy groceries"
+task add "Buy groceries"
 
 # 列出所有任務
-uv run task_cli.py list
+task list
 
 # 列出已完成的任務
-uv run task_cli.py list --status done
+task list --status done
 
 # 列出特定日期的任務
-uv run task_cli.py list --date 2026-06-15
+task list --date 2026-06-15
 
 # 更新任務
-uv run task_cli.py update 1 --description "Buy milk" --status done
+task update 1 --description "Buy milk" --status done
 
 # 快速標記完成
-uv run task_cli.py mark-done 1
+task mark-done 1
 
 # 快速標記進行中
-uv run task_cli.py mark-in-progress 1
+task mark-in-progress 1
 
 # 刪除任務
-uv run task_cli.py delete 1
+task delete 1
 ```
 
 ## 📚 學習資源

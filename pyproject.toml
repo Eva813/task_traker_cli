@@ -1,6 +1,6 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "task-tracker"
@@ -12,6 +12,9 @@ dependencies = []
 
 [project.scripts]
 task = "task_cli:main"
+
+[tool.setuptools]
+py-modules = ["task_cli"]
 
 [tool.pytest.ini_options]
 testpaths = ["test_task_cli.py"]
