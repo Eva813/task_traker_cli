@@ -1,0 +1,16 @@
+{
+  "tasks": [
+    {
+      "id": 3,
+      "description": "Read Python docs",
+      "status": "done",
+      "date": "2026-06-25"
+    },
+    {
+      "id": 4,
+      "description": "prsctice",
+      "status": "todo",
+      "date": "2026-06-25"
+    }
+  ]
+}
