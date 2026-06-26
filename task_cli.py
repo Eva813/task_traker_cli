@@ -68,30 +68,40 @@ def add_task(database, description):
     Add a new task to the database.
     
     Args:
-        database (dict): Database with tasks list
+        database (str or dict): File path to JSON database or database dict
         description (str): Task description
         
     Returns:
-        int: ID of the newly created task
+        dict: The newly created task object
     """
-    # TODO: 
+    # Load database if file path is provided
+    if isinstance(database, str):
+        db = load_database(database)
+        db_path = database
+    else:
+        db = database
+        db_path = DB_PATH
+    
     # 1. 計算新 task 的 ID (最大 ID + 1)
-    # 2. 創建新 task 字典 (id, description, status="todo", date=today)
-    # 3. 添加到 database["tasks"]
-    # 4. 保存並返回新 task 的 ID
-    if database["tasks"]:
-        new_id = max(task["id"] for task in database["tasks"]) + 1
+    if db["tasks"]:
+        new_id = max(task["id"] for task in db["tasks"]) + 1
     else:
         new_id = 1
+    
+    # 2. 創建新 task 字典
     new_task = {
         "id": new_id,
         "description": description,
         "status": "todo",
         "date": datetime.today().strftime("%Y-%m-%d")
-    } 
-    database["tasks"].append(new_task)
-    save_database(database)
-    return new_id
+    }
+    
+    # 3. 添加到 database["tasks"]
+    db["tasks"].append(new_task)
+    
+    # 4. 保存並返回新 task
+    save_database(db, db_path)
+    return new_task
 
 # 寫法一：生成式（簡潔）
 #new_id = max(task["id"] for task in database["tasks"]) + 1
@@ -103,26 +113,36 @@ def add_task(database, description):
 #new_id = max(ids) + 1
 
 
-def update_task(database, task_id, description=None, status=None):
+def update_task(database, task_id, description=None, status=None, date=None):
     """
-    Update task description and/or status.
+    Update task description, status, and/or date.
     
     Args:
-        database (dict): Database with tasks list
+        database (str or dict): File path to JSON database or database dict
         task_id (int): ID of task to update
         description (str): New description (optional)
         status (str): New status (optional)
+        date (str): New date in YYYY-MM-DD format (optional)
         
     Returns:
         bool: True if successful, False if task not found
     """
+    # Load database if file path is provided
+    if isinstance(database, str):
+        db = load_database(database)
+        db_path = database
+    else:
+        db = database
+        db_path = DB_PATH
+    
     # TODO:
     # 1. 找到指定 ID 的 task
     # 2. 如果 description 不為 None，更新 description
     # 3. 如果 status 不為 None，驗證並更新 status
-    # 4. 保存數據庫
-    # 5. 返回成功/失敗
-    for task in database["tasks"]:
+    # 4. 如果 date 不為 None，更新 date
+    # 5. 保存數據庫
+    # 6. 返回成功/失敗
+    for task in db["tasks"]:
         if task["id"] == task_id:
             if description is not None:
                 task["description"] = description
@@ -132,7 +152,9 @@ def update_task(database, task_id, description=None, status=None):
                 else:
                     print(f"Invalid status: {status}. Must be one of {STATUSES}.")
                     return False
-            save_database(database)
+            if date is not None:
+                task["date"] = date
+            save_database(db, db_path)
             return True
     return False
 
@@ -142,21 +164,29 @@ def delete_task(database, task_id):
     Delete a task by ID.
     
     Args:
-        database (dict): Database with tasks list
+        database (str or dict): File path to JSON database or database dict
         task_id (int): ID of task to delete
         
     Returns:
         bool: True if successful, False if task not found
     """
+    # Load database if file path is provided
+    if isinstance(database, str):
+        db = load_database(database)
+        db_path = database
+    else:
+        db = database
+        db_path = DB_PATH
+    
     # TODO:
     # 1. 找到並刪除指定 ID 的 task
     # 2. 保存數據庫
     # 3. 返回成功/失敗
-    for i, task in enumerate(database["tasks"]):
+    for i, task in enumerate(db["tasks"]):
         print(i, task)
         if task["id"] == task_id:
-            del database["tasks"][i]
-            save_database(database)
+            del db["tasks"][i]
+            save_database(db, db_path)
             return True
     return False
 
@@ -166,7 +196,7 @@ def list_tasks(database, status=None, date=None, date_operator="="):
     List tasks with optional filters.
     
     Args:
-        database (dict): Database with tasks list
+        database (str or dict): File path to JSON database or database dict
         status (str): Filter by status (todo, in-progress, done, or all)
         date (str): Filter by date (format: YYYY-MM-DD)
         date_operator (str): Date comparison operator (<, >, =)
@@ -174,12 +204,18 @@ def list_tasks(database, status=None, date=None, date_operator="="):
     Returns:
         list: Filtered tasks
     """
+    # Load database if file path is provided
+    if isinstance(database, str):
+        db = load_database(database)
+    else:
+        db = database
+    
     # TODO:
     # 1. 從 database["tasks"] 取得所有 tasks
     # 2. 如果 status 指定且不是 "all"，按 status 篩選
     # 3. 如果 date 指定，按日期和 operator 篩選
     # 4. 返回篩選後的 tasks
-    tasks = database["tasks"]
+    tasks = db["tasks"]
     if status and status != "all":
         # 「對 tasks 裡每個 task，如果 task["status"] == status，就把這個 task放進新的 list」
         tasks = [task for task in tasks if task["status"] == status]
@@ -197,14 +233,32 @@ def list_tasks(database, status=None, date=None, date_operator="="):
 # TODO 3: 實現快速狀態更新功能
 # ============================================================================
 def mark_done(database, task_id):
-    """Mark a task as done."""
+    """
+    Mark a task as done.
+    
+    Args:
+        database (str or dict): File path to JSON database or database dict
+        task_id (int): ID of task to mark as done
+        
+    Returns:
+        bool: True if successful, False if task not found
+    """
     # TODO: 呼叫 update_task，設置 status="done"
     return update_task(database, task_id, description=None, status="done")
 
 
 
 def mark_in_progress(database, task_id):
-    """Mark a task as in-progress."""
+    """
+    Mark a task as in-progress.
+    
+    Args:
+        database (str or dict): File path to JSON database or database dict
+        task_id (int): ID of task to mark as in-progress
+        
+    Returns:
+        bool: True if successful, False if task not found
+    """
     # TODO: 呼叫 update_task，設置 status="in-progress"
     return update_task(database, task_id, description=None, status="in-progress")
 
